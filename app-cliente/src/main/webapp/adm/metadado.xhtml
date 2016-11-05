@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	<ui:define name="processo">
+		<h3>MetaDado de Tela</h3>
+		<h:form id="reg">
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<h:outputLabel for="nomeTela" value="Nome Tela:" />
+				<h:inputText id="nomeTela" value="#{metaDadoDTO.nomeTela}" />
+				<h:message for="nomeTela" errorClass="invalid" />
+
+				<h:outputLabel for="tituloTela" value="Titulo Tela" />
+				<h:inputText id="tituloTela" value="#{metaDadoDTO.tituloTela}" />
+				<h:message for="tituloTela" errorClass="invalid" />
+
+				<h:outputLabel for="descricaoTela" value="Descricao Tela:" />
+				<h:inputText id="descricaoTela" value="#{metaDadoDTO.descricaoTela}" />
+				<h:message for="descricaoTela" errorClass="invalid" />
+
+
+				<h:outputLabel for="numeroTela" value="Numero Tela:" />
+				<h:inputText id="numeroTela" value="#{metaDadoDTO.numeroTela}" />
+				<h:message for="numeroTela" errorClass="invalid" />
+
+				<h:outputLabel for="urlTela" value="Url Tela:" />
+				<h:inputText id="urlTela" value="#{metaDadoDTO.urlTela}" />
+				<h:message for="urlTela" errorClass="invalid" />
+
+				<h:outputLabel for="xml" value="xml" />
+				<h:inputText id="xml" value="#{metaDadoDTO.xml}" />
+				<h:message for="xml" errorClass="invalid" />
+
+			</h:panelGrid>
+
+			<p>
+				<h:panelGrid columns="2">
+					<h:commandButton id="registrar"
+						action="#{metaDadoController.registrar}" value="Registrar"
+						styleClass="register" />
+					<h:messages styleClass="messages" errorClass="invalid"
+						infoClass="valid" warnClass="warning" globalOnly="true" />
+				</h:panelGrid>
+			</p>
+		</h:form>
+		<h2>metadados do sistema</h2>
+		<h:panelGroup rendered="#{empty repositorioMetaDado}">
+			<em>Nao ha metadados do sistema.</em>
+		</h:panelGroup>
+		<h:dataTable var="metadado" value="#{repositorioMetaDado}"
+			rendered="#{not empty repositorioMetaDado}"
+			styleClass="simpletablestyle">
+			<h:column>
+				<f:facet name="header">Id</f:facet>
+                #{metadado.id}
+            </h:column>
+			<h:column>
+				<f:facet name="header">Nome Tela</f:facet>
+                #{metadado.nomeTela}
+            </h:column>
+			<h:column>
+				<f:facet name="header">Titulo Tela</f:facet>
+                #{metadado.tituloTela}
+            </h:column>
+			<h:column>
+				<f:facet name="header">Descricao</f:facet>
+                #{metadado.descricaoTela}
+            </h:column>
+			<h:column>
+				<f:facet name="header">Numero Tela</f:facet>
+                #{metadado.numeroTela}
+            </h:column>
+		</h:dataTable>
+	</ui:define>
+</ui:composition>

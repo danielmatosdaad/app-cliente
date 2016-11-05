@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cf="http://url.projeto/componentes"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	<ui:define name="processo">
+		<h3>Funcionalidade</h3>
+		<h:form id="reg">
+			<h:panelGrid columns="3" columnClasses="titleCell">
+				<p:outputLabel for="grupoFuncionalidade" value="Grupo" />
+				<p:selectOneMenu id="grupoFuncionalidade" value="#{funcionalidadeController.grupoFuncionalidadeRegistro}"
+					converter="grupoFuncionalidadeConverter">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{funcionalidadeController.selectItemGrupoFuncionalidade}" />
+				</p:selectOneMenu>
+				<p:message for="grupoFuncionalidade" errorClass="invalid" />
+				
+				<p:outputLabel for="perfil" value="Perfil: " />
+				<p:selectOneMenu id="perfil" value="#{funcionalidadeController.perfilRegistro}"
+					converter="perfilConverter">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{funcionalidadeController.selectItemPerfil}" />
+				</p:selectOneMenu>
+				<p:message for="perfil" errorClass="invalid" />
+				
+				<p:outputLabel for="metadado" value="MetaDado:" />
+				<p:selectOneMenu id="metadado" value="#{funcionalidadeController.metaDadoRegistro}"
+					converter="metaDadoConverter">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{funcionalidadeController.selectItemMetaDado}" />
+				</p:selectOneMenu>
+				<p:message for="metadado" errorClass="invalid" />
+				
+				<p:outputLabel for="nomeFuncionalidade" value="Name:" />
+				<p:inputText id="nomeFuncionalidade" value="#{funcionalidadeRegistro.nomeFuncionalidade}" />
+				<p:message for="nomeFuncionalidade" errorClass="invalid" />
+
+				<p:outputLabel for="descricao" value="Descricao:" />
+				<p:inputText id="descricao" value="#{funcionalidadeRegistro.descricao}" />
+				<p:message for="descricao" errorClass="invalid" />
+			</h:panelGrid>
+
+			<p>
+				<h:panelGrid columns="2">
+					<p:commandButton id="registrar"
+						action="#{funcionalidadeController.registrar}" value="Registrar"
+						styleClass="register" />
+					<p:messages styleClass="messages" errorClass="invalid"
+						infoClass="valid" warnClass="warning" globalOnly="true" />
+				</h:panelGrid>
+			</p>
+		</h:form>
+		<h2>Funcionalidades do sistema</h2>
+		<h:panelGroup rendered="#{empty funcionalidadeController.repositorioFuncionalidade}">
+			<em>Nao ha funciocionalidades do sistema.</em>
+		</h:panelGroup>
+		<p:dataTable var="bean" value="#{funcionalidadeController.repositorioFuncionalidade.repositorioFuncionalidade}"
+			rendered="#{not empty funcionalidadeController.repositorioFuncionalidade.repositorioFuncionalidade}"
+			styleClass="simpletablestyle">
+			<p:column>
+				<f:facet name="header">Id</f:facet>
+                #{bean.id}
+            </p:column>
+			<p:column>
+				<f:facet name="header">Nome</f:facet>
+                #{bean.nomeFuncionalidade}
+            </p:column>
+			<p:column>
+				<f:facet name="header">Descricao</f:facet>
+                #{bean.descricao}
+            </p:column>
+			<p:column>
+				<f:facet name="header">Grupo</f:facet>
+                #{bean.grupoFuncionalidade.nomeGrupoFuncionalidade}
+            </p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>

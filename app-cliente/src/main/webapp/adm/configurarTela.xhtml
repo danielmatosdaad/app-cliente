@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cf="http://url.projeto/componentes"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	<ui:define name="processo">
+		<script type="text/javascript">
+    function handleDrop(event, ui) {
+        var droppedMetaDado = ui.draggable;
+ 
+        droppedMetaDado.fadeOut('fast');
+    }
+</script>
+		<p:steps activeIndex="0" styleClass="custom" readonly="false">
+			<p:menuitem value="Escolher Componentes" url="#" />
+			<p:menuitem value="Configurar Componentes" url="#" />
+			<p:menuitem value="Visualiar Componentes" url="#" />
+			<p:menuitem value="Cadastrar MetaDado" url="#" />
+		</p:steps>
+		<h:form id="metaDadoForm">
+			<div
+				style="margin-left: 20px; float: left; width: 300px; margin-top: 30px;">
+				<p:dataTable id="availableMetaDados" var="mdo"
+					value="#{configuraMetaDadoTela.metaDados}">
+					<p:column style="width:20px">
+						<h:outputText id="dragIcon" styleClass="ui-icon ui-icon-arrow-4" />
+						<p:draggable for="dragIcon" revert="true" helper="clone" />
+					</p:column>
+
+					<p:column headerText="Id">
+						<h:outputText value="#{mdo.nomeMetadado}" />
+					</p:column>
+				</p:dataTable>
+				<p:droppable for="selectedMetaDado" tolerance="touch"
+					activeStyleClass="ui-state-highlight"
+					datasource="availableMetaDados" onDrop="handleDrop">
+					<p:ajax listener="#{configuraMetaDadoTela.onMetaDadoDrop}"
+						update="dropArea availableMetaDados" />
+				</p:droppable>
+			</div>
+			<div
+				style="margin-left: 20px; float: left; width: 500px; margin-top: 30px;">
+				<p:panel id="selectedMetaDado" legend="Tela de Componentes"
+					style="margin-:20px; float:left;">
+					<p:outputPanel id="dropArea" style="margin-left: 5px; margin-rigth: 10px;float: left; width: 550px;">
+						<h:outputText value="Arraste para essa area"
+							rendered="#{empty configuraMetaDadoTela.droppedMetaDados}"
+							style="font-size:24px;" />
+						<p:dataTable id="selectedMetaDadoTable" var="mdo"
+							value="#{configuraMetaDadoTela.droppedMetaDados}"
+							rendered="#{not empty configuraMetaDadoTela.droppedMetaDados}" style="margin-left: 5px; margin-rigth: 5px;float: left;">
+							<p:column headerText="Id" style="width:300px">
+								<h:outputText value="#{mdo.nomeMetadado}" />
+							</p:column>
+
+
+							<p:column style="width:20px margin-left: 2px; margin-rigth: 2px; ">
+								<p:commandButton value="remover" update="@form" icon="fa fa-remove"
+									actionListener="#{configuraMetaDadoTela.buttonActionRemoverComponente}">
+									<f:setPropertyActionListener name="removerComponente" value="#{mdo}"
+										target="#{configuraMetaDadoTela.selectedMetaDado}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:outputPanel>
+				</p:panel>
+			</div>
+
+		</h:form>
+		<div style="clear: both;"></div>
+
+	</ui:define>
+
+	<ui:define name="processo-menu-bar">
+		<div
+			style="margin-top: 20px; margin-left: 20px; float: left; width: 300px;">
+			<h:form>
+				<p:button outcome="/adm/configuraMetadado" value="Continuar"
+					icon="fa fa-arrow-right">
+				</p:button>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

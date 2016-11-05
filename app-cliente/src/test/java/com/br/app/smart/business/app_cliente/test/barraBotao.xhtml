@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:projeto="http://url.projeto/componentes">
+
+<ui:composition>
+	<h:commandButton id="#{idBotao}" action="#{componenteMB.enviar}"
+		actionListener="#{componenteMB.processAction}" value="#{nomeBotao}">
+		<f:attribute name="acaoRequisicao" value="#{acaoRequisicao}" />
+		<f:attribute name="acaoFluxo" value="#{acaoFluxo}" />
+		<f:attribute name="numeroTela" value="#{numeroTela}" />
+		<f:attribute name="numeroFuncionalidade"
+			value="#{numeroFuncionalidade}" />
+	</h:commandButton>
+</ui:composition>
+</html>
