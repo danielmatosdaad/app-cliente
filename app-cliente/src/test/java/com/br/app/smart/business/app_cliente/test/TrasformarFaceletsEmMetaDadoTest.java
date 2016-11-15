@@ -21,11 +21,16 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.SAXException;
 
+import br.com.metadado.conversor.ConversorMetadadoFacelet;
 import br.com.projeto.arquivo.util.FileUtil;
+import br.com.projeto.facelet.bean.Facelet;
 import br.com.projeto.metadado.bean.MetaDado;
 import br.com.projeto.metadado.infra.CriadorXML;
 import br.com.projeto.metadado.infra.ProcessadorXml;
+import br.com.projeto.metadado.infra.comum.IdentificadorWrapper;
+import br.com.projeto.metadado.infra.comum.MetadadoUI;
 import br.com.projeto.metadado.infra.comum.TipoTransformacao;
+import br.com.projeto.metadado.regras.RegrasMetadado;
 import br.projeto.util.FaceltsRegistrados;
 import junit.framework.TestCase;
 import java.io.InputStream;
@@ -34,8 +39,8 @@ import java.net.URL;
 
 public class TrasformarFaceletsEmMetaDadoTest extends TestCase {
 
-	public static void main(String args[])
-			throws ParserConfigurationException, SAXException, IOException, XMLStreamException, JAXBException, TransformerConfigurationException, TransformerException {
+	public static void main(String args[]) throws ParserConfigurationException, SAXException, IOException,
+			XMLStreamException, JAXBException, TransformerConfigurationException, TransformerException {
 
 		String inXML = "barraBotao.xhtml";
 		String inXSL = "componenteUi.xslt";
@@ -61,14 +66,21 @@ public class TrasformarFaceletsEmMetaDadoTest extends TestCase {
 		System.out.println(o);
 
 		ProcessadorXml processador = new ProcessadorXml();
+		RegrasMetadado regrasMetadado = new RegrasMetadado();
 
 		List<File> lista = FaceltsRegistrados.buscarComponentesFacelets();
 		for (File xml : lista) {
-			Object obj = processador.transformar(MetaDado.class,xml);
-			if (obj instanceof MetaDado) {
+			Object obj = processador.transformar(Facelet.class, xml);
+			if (obj instanceof Facelet) {
 
-				MetaDado mdo = (MetaDado) obj;
-				System.out.println(mdo.getConteudo().getComponentes().get(0).getNomeComponente());
+				Facelet facelet = (Facelet) obj;
+				facelet.setNomeMetadado(xml.getName());
+				System.out.println(facelet.getConteudo().getComponentes().get(0).getNomeComponente());
+				MetaDado metaDado = ConversorMetadadoFacelet.converter(facelet);
+				MetadadoUI metaDadoUI = regrasMetadado.converterMetadadoUI(metaDado);
+				for (IdentificadorWrapper identificadorWrapper : metaDadoUI.getIdentificadoreNegocialMetadados()) {
+					System.out.println(identificadorWrapper.getWrapper().getId());
+				}
 			}
 		}
 

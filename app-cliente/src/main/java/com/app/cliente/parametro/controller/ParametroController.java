@@ -17,6 +17,8 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 import br.com.app.smart.business.dao.interfaces.IServicoRemoteDAO;
 import br.com.app.smart.business.exception.InfraEstruturaException;
@@ -127,4 +129,28 @@ public class ParametroController {
 		}
 		return items;
 	}
+	
+	public void onRowEdit(RowEditEvent event) {
+		
+		Object obj = event.getObject();
+		System.out.println(obj);
+        FacesMessage msg = new FacesMessage("Parametro Editado",  "detalhe");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+    	Object obj = event.getObject();
+        FacesMessage msg = new FacesMessage("Parametro Cancelado", "detalhe");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+     
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
 }

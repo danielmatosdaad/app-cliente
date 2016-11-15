@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
@@ -18,11 +17,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import com.app.cliente.infra.controller.fluxo.INavegacao;
 import com.app.cliente.infra.tela.ContextoTela;
 import com.app.cliente.infra.tela.DadosTela;
-
 import br.com.app.smart.business.exception.InfraEstruturaException;
 import br.com.app.smart.business.exception.NegocioException;
 import br.com.projeto.metadado.infra.comum.IdentificadorBean;

@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cf="http://url.projeto/componentes"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	<ui:define name="processo">
+		<script type="text/javascript">
+    function handleDrop(event, ui) {
+        var droppedMetaDado = ui.draggable;
+ 
+        droppedMetaDado.fadeOut('fast');
+    }
+</script>
+		<p:steps activeIndex="1" styleClass="custom">
+			<p:menuitem value="Escolher" url="#" />
+			<p:menuitem value="Configurar" url="#" />
+			<p:menuitem value="Visualiar" url="#" />
+			<p:menuitem value="Cadastrar" url="#" />
+		</p:steps>
+		<div style="float: left; width: 100%;">
+			<h:form>
+				<p:panel id="idFaceletPanel" legend="Painel Componentes"
+					style=" float:left;border:0px;">
+					<p:repeat value="#{confCpn.ctxConfMdo.faceletsEscolhidos}"
+						var="face" style="border:0px; float:left;">
+						<p:panel id="id-painel-metadados" header="#{face.nomeMetadado}"
+							style="float:left;">
+							<p:repeat value="#{face.conteudo.componentes}" var="componente">
+								<f:facet name="header">#{componente.nomeComponente}</f:facet>
+								<p:dataTable id="idTableIdentificadoresComponentes"
+									var="propriedade" value="#{componente.propriedades}"
+									rendered="#{not empty componente.propriedades}"
+									style="margin-left: 5px; margin-rigth: 5px;float: left;">
+									<f:facet name="header">#{componente.nomeComponente}</f:facet>
+									<p:column headerText="Id" style="width:200px">
+										<h:outputText value="#{propriedade.nome}" />
+									</p:column>
+									<p:column headerText="Valor Default" style="width:200px">
+										<h:outputText value="#{propriedade.valor}" />
+									</p:column>
+									<p:column headerText="Valor atribuido" style="width:300px">
+										<h:inputText
+											value="#{confCpn.parametros[(face.nomeMetadado.concat('-').concat(componente.nomeComponente).concat('-').concat(propriedade.nome).replaceAll('.xhtml',''))]}" />
+									</p:column>
+
+								</p:dataTable>
+
+							</p:repeat>
+						</p:panel>
+					</p:repeat>
+
+				</p:panel>
+
+				<div style="clear: both;"></div>
+				<p:commandButton value="Salvar" action="#{confCpn.irPara}"
+					actionListener="#{confCpn.buttonSalvarPropriedadeComponente}">
+				</p:commandButton>
+				<p:commandButton value="Limpar" actionListener="#{confCpn.limpar}">
+				</p:commandButton>
+			</h:form>
+		</div>
+	</ui:define>
+	<div style="clear: both;"></div>
+
+	<ui:define name="processo-menu-bar">
+		<h:form>
+			<p:button outcome="/adm/configuraTela/escolhaComponente"
+				value="Voltar" icon="fa fa-chevron-left">
+			</p:button>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

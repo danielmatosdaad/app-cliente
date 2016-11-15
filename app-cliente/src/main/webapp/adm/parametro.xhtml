@@ -7,65 +7,117 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
 	<ui:define name="processo">
-		<h3>Parametro</h3>
-		<h:form id="reg">
-			<h:panelGrid columns="3" columnClasses="titleCell">
-				<h:outputLabel for="name" value="Name:" />
-				<h:inputText id="name" value="#{parametroDTO.nome}" />
-				<h:message for="name" errorClass="invalid" />
+		<p:fieldset legend="Cadastro" toggleable="true" toggleSpeed="500">
+			<h:form id="reg">
+				<h:panelGrid columns="3" columnClasses="titleCell">
+					<h:outputLabel for="name" value="Name:" />
+					<h:inputText id="name" value="#{parametroDTO.nome}" />
+					<h:message for="name" errorClass="invalid" />
 
-				<h:outputLabel for="descricao" value="Descricao:" />
-				<h:inputText id="descricao" value="#{parametroDTO.descricao}" />
-				<h:message for="descricao" errorClass="invalid" />
+					<h:outputLabel for="descricao" value="Descricao:" />
+					<h:inputText id="descricao" value="#{parametroDTO.descricao}" />
+					<h:message for="descricao" errorClass="invalid" />
 
-				<h:outputLabel for="valor" value="Valor:" />
-				<h:inputText id="valor" value="#{parametroDTO.valor}" />
-				<h:message for="valor" errorClass="invalid" />
-				<h:outputLabel value="Tipo Parametro" />
-				<h:selectOneMenu value="#{parametroDTO.tipoParametro}"
-					converter="tipoParametroConverter">
-					<f:selectItem itemLabel="Selecione" />
-					<f:selectItems value="#{parametroController.listaTipoParametros}" />
-				</h:selectOneMenu>
-			</h:panelGrid>
-
-			<p>
-				<h:panelGrid columns="2">
-					<h:commandButton id="registrar"
-						action="#{parametroController.registrar}" value="Registrar"
-						styleClass="register" />
-					<h:messages styleClass="messages" errorClass="invalid"
-						infoClass="valid" warnClass="warning" globalOnly="true" />
+					<h:outputLabel for="valor" value="Valor:" />
+					<h:inputText id="valor" value="#{parametroDTO.valor}" />
+					<h:message for="valor" errorClass="invalid" />
+					<h:outputLabel value="Tipo Parametro" />
+					<h:selectOneMenu value="#{parametroDTO.tipoParametro}"
+						converter="tipoParametroConverter">
+						<f:selectItem itemLabel="Selecione" />
+						<f:selectItems value="#{parametroController.listaTipoParametros}" />
+					</h:selectOneMenu>
 				</h:panelGrid>
-			</p>
+				<div style="clear: both; height: 20px"></div>
+					<p:panel columns="2" style="width:100%;float:center;border:0px;">
+						<p:commandButton id="registrar"
+							action="#{parametroController.registrar}" value="Registrar" />
+						<p:messages styleClass="messages"
+							infoClass="valid" warnClass="warning" globalOnly="true" />
+					</p:panel>
+				</h:form>
+		</p:fieldset>
+		<div style="clear: both; height: 20px"></div>
+		<h:form id="form-edit">
+			<p:growl id="msgs" showDetail="true" />
+			<h:panelGroup rendered="#{empty repositorioParametro}">
+				<em>Nao ha parametros do sistema.</em>
+			</h:panelGroup>
+			<p:dataTable var="parametro" value="#{repositorioParametro}"
+				rendered="#{not empty repositorioParametro}" editable="true"
+				style="margin-bottom:20px">
+				<f:facet name="header">
+           	Parametros Registrados
+       		</f:facet>
+				<p:ajax event="rowEdit" listener="#{parametroController.onRowEdit}"
+					update=":form-edit:msgs" />
+				<p:ajax event="rowEditCancel"
+					listener="#{parametroController.onRowCancel}"
+					update=":form-edit:msgs" />
+
+				<p:column headerText="Id">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{parametro.id}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{parametroDTO.id}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Nome">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{parametro.nome}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{parametroDTO.nome}" style="width:100%"
+								label="Nome" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Valor">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{parametro.valor}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{parametroDTO.valor}" style="width:100%"
+								label="Valor" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Descricao">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{parametro.descricao}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{parametroDTO.descricao}" style="width:100%"
+								label="Descricao" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column headerText="Tipo">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{parametro.tipoParametro.texto}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:selectOneMenu value="#{parametroDTO.tipoParametro}"
+								converter="tipoParametroConverter" style="width:100%">
+								<f:selectItem itemLabel="Selecione" />
+								<f:selectItems
+									value="#{parametroController.listaTipoParametros}" />
+							</h:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				<p:column style="width:32px">
+					<p:rowEditor />
+				</p:column>
+			</p:dataTable>
 		</h:form>
-		<h2>Parametros do sistema</h2>
-		<h:panelGroup rendered="#{empty repositorioParametro}">
-			<em>Nao ha parametros do sistema.</em>
-		</h:panelGroup>
-		<h:dataTable var="parametro" value="#{repositorioParametro}"
-			rendered="#{not empty repositorioParametro}"
-			styleClass="simpletablestyle">
-			<h:column>
-				<f:facet name="header">Id</f:facet>
-                #{parametro.id}
-            </h:column>
-			<h:column>
-				<f:facet name="header">Nome</f:facet>
-                #{parametro.nome}
-            </h:column>
-			<h:column>
-				<f:facet name="header">Descricao</f:facet>
-                #{parametro.descricao}
-            </h:column>
-			<h:column>
-				<f:facet name="header">Valor</f:facet>
-                #{parametro.valor}
-            </h:column>
-			<h:column>
-				<f:facet name="header">Tipo de Parametro</f:facet>
-                #{parametro.tipoParametro.texto}
-            </h:column>
-		</h:dataTable>
 	</ui:define>
 </ui:composition>

@@ -25,54 +25,61 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </h:head>
 <h:body>
-	<div id="container">
+	<div class="ui-fluid">
+		<div id="container">
 
-		<p:layout
-			style="min-width:680px;min-height:384px; width:1260px; height:700px;">
-			<p:layoutUnit position="west" resizable="true" size="300">
-				<h:form>
-					<p:growl id="messages" showDetail="false" />
+			<p:layout
+				style="min-width:680px;min-height:384px; width:1260px; height:700px;">
+				<p:layoutUnit position="west" resizable="true" size="300">
+					<h:form>
+						<p:growl id="messages" showDetail="false" />
 
-					<p:menu style="width:270px;">
-						<p:submenu label="Ajax">
-							<p:menuitem value="Save" actionListener="#{menuView.save}"
-								update="messages" icon="ui-icon-disk" />
-							<p:menuitem value="Update" actionListener="#{menuView.update}"
-								update="messages" icon="ui-icon-arrowrefresh-1-w" />
-						</p:submenu>
-						<p:submenu label="Non-Ajax">
-							<p:menuitem value="Delete" actionListener="#{menuView.delete}"
-								update="messages" ajax="false" icon="ui-icon-close" />
-						</p:submenu>
-						<p:submenu label="Configuracao Sistema">
-							<p:menuitem value="Parametro" outcome="/adm/parametro"
-								icon="fa fa-chevron-right" />
-							<p:menuitem value="Perfil" outcome="/adm/perfil"
-								icon="fa fa-chevron-right" />
-							<p:menuitem value="Grupo Funcionalidade"
-								outcome="/adm/grupofuncionalidade" icon="fa fa-chevron-right" />
-							<p:menuitem value="Funcionalidade" outcome="/adm/funcionalidade"
-								icon="fa fa-chevron-right" />
+						<p:menu style="width:270px;">
+							<p:submenu label="Ajax">
+								<p:menuitem value="Save" actionListener="#{menuView.save}"
+									update="messages" icon="ui-icon-disk" />
+								<p:menuitem value="Update" actionListener="#{menuView.update}"
+									update="messages" icon="ui-icon-arrowrefresh-1-w" />
+							</p:submenu>
+							<p:submenu label="Non-Ajax">
+								<p:menuitem value="Delete" actionListener="#{menuView.delete}"
+									update="messages" ajax="false" icon="ui-icon-close" />
+							</p:submenu>
+							<p:submenu label="Configuracao Sistema">
+								<p:menuitem value="Parametro" outcome="/adm/parametro"
+									icon="fa fa-chevron-right" />
+								<p:menuitem value="Perfil" outcome="/adm/perfil"
+									icon="fa fa-chevron-right" />
+								<p:menuitem value="Grupo Funcionalidade"
+									outcome="/adm/grupofuncionalidade" icon="fa fa-chevron-right" />
+								<p:menuitem value="Funcionalidade" outcome="/adm/funcionalidade"
+									icon="fa fa-chevron-right" />
 
-							<p:menuitem value="Configura Metadado"
-								outcome="/adm/configurarTela" icon="fa fa-chevron-right" />
-							<p:menuitem value="Metadado" outcome="/adm/metadado"
-								icon="fa fa-chevron-right" />
-							<p:menuitem value="External" url="http://www.primefaces.org"
-								icon="ui-icon-home" />
-						</p:submenu>
-					</p:menu>
-				</h:form>
+								<p:menuitem value="Configura Tela"
+									outcome="/adm/configuraTela/escolhaComponente"
+									icon="fa fa-chevron-right" />
+								<p:menuitem value="Metadado" outcome="/adm/metadado"
+									icon="fa fa-chevron-right" />
+								<p:menuitem value="Identificadores MetaDado"
+									outcome="/adm/identificadores/mantemIdentificador"
+									icon="fa fa-chevron-right" />
+								<p:menuitem value="External" url="http://www.primefaces.org"
+									icon="ui-icon-home" />
+							</p:submenu>
+						</p:menu>
+					</h:form>
 
 
-			</p:layoutUnit>
-			<p:layoutUnit position="center" size="1000">
-				<div id="content">
-					<ui:insert name="content"></ui:insert>
-					<ui:insert name="menu-bar"></ui:insert>
-				</div>
-			</p:layoutUnit>
-		</p:layout>
+				</p:layoutUnit>
+				<p:layoutUnit position="center" size="1000" style="width:100%">
+					<div id="content">
+						<ui:insert name="content"></ui:insert>
+						<ui:insert name="menu-bar"></ui:insert>
+					</div>
+				</p:layoutUnit>
+
+			</p:layout>
+		</div>
 	</div>
 </h:body>
 </html>

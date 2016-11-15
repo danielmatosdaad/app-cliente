@@ -22,73 +22,81 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
 	<ui:define name="processo">
-		<h3>MetaDado de Tela</h3>
-		<h:form id="reg">
-			<p:panelGrid columns="3">
+		<p:steps activeIndex="3" styleClass="custom">
+			<p:menuitem value="Escolher" url="#" />
+			<p:menuitem value="Configurar" url="#" />
+			<p:menuitem value="Visualiar" url="#" />
+			<p:menuitem value="Cadastrar" url="#" />
+		</p:steps>
+		<h:form>
+			<p:panel style="width:100%;float:center;border:0px;">
+
 				<p:outputLabel for="nomeTela" value="Nome Tela:" />
-				<p:inputText id="nomeTela" value="#{metaDadoDTO.nomeTela}" />
+				<p:inputText id="nomeTela"
+					value="#{cadCpnTela.metaDadoDTO.nomeTela}" />
 				<p:message for="nomeTela" errorClass="invalid" />
 
 				<p:outputLabel for="tituloTela" value="Titulo Tela" />
-				<p:inputText id="tituloTela" value="#{metaDadoDTO.tituloTela}" />
+				<p:inputText id="tituloTela"
+					value="#{cadCpnTela.metaDadoDTO.tituloTela}" />
 				<p:message for="tituloTela" errorClass="invalid" />
 
 				<p:outputLabel for="descricaoTela" value="Descricao Tela:" />
-				<p:inputText id="descricaoTela" value="#{metaDadoDTO.descricaoTela}" />
+				<p:inputText id="descricaoTela"
+					value="#{cadCpnTela.metaDadoDTO.descricaoTela}" />
 				<p:message for="descricaoTela" errorClass="invalid" />
 
 
 				<p:outputLabel for="numeroTela" value="Numero Tela:" />
-				<p:inputText id="numeroTela" value="#{metaDadoDTO.numeroTela}" />
+				<p:inputText id="numeroTela"
+					value="#{cadCpnTela.metaDadoDTO.numeroTela}" />
 				<p:message for="numeroTela" errorClass="invalid" />
 
 				<p:outputLabel for="urlTela" value="Url Tela:" />
-				<p:inputText id="urlTela" value="#{metaDadoDTO.urlTela}" />
+				<p:inputText id="urlTela" value="#{cadCpnTela.metaDadoDTO.urlTela}" />
 				<p:message for="urlTela" errorClass="invalid" />
 
 				<p:outputLabel for="xml" value="xml" />
-				<p:inputTextarea id="xml" value="#{metaDadoDTO.xml}" />
+				<p:inputTextarea id="xml" value="#{cadCpnTela.metaDadoDTO.xml}" />
 				<p:message for="xml" errorClass="invalid" />
 
-			</p:panelGrid>
+			</p:panel>
 
-			<p>
-				<h:panelGrid columns="2">
-					<h:commandButton id="registrar"
-						action="#{metaDadoController.registrar}" value="Registrar"
-						styleClass="register" />
-					<h:messages styleClass="messages" errorClass="invalid"
-						infoClass="valid" warnClass="warning" globalOnly="true" />
-				</h:panelGrid>
-			</p>
+			<div style="clear: both;"></div>
+			<p:panel columns="2" style="width:100%;float:center;border:0px;">
+				<p:commandButton id="registrar" action="#{cadCpnTela.registrar}"
+					value="Registrar" styleClass="register" />
+				<p:messages styleClass="messages" errorClass="invalid"
+					infoClass="valid" warnClass="warning" globalOnly="true" />
+			</p:panel>
 		</h:form>
-		<h2>metadados do sistema</h2>
-		<h:panelGroup rendered="#{empty repositorioMetaDado}">
-			<em>Nao ha metadados do sistema.</em>
-		</h:panelGroup>
-		<h:dataTable var="metadado" value="#{repositorioMetaDado}"
-			rendered="#{not empty repositorioMetaDado}"
-			styleClass="simpletablestyle">
-			<h:column>
+		<div style="clear: both;"></div>
+		<p:panel rendered="#{empty cadCpnTela.listaMetadado}">
+			Nao ha metadados do sistema.
+		</p:panel>
+		<p:dataTable var="metadado" value="#{cadCpnTela.listaMetadado}"
+			rendered="#{not empty cadCpnTela.listaMetadado}">
+			<f:facet name="header">Metadados do sistema</f:facet>
+			<p:column>
 				<f:facet name="header">Id</f:facet>
                 #{metadado.id}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Nome Tela</f:facet>
                 #{metadado.nomeTela}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Titulo Tela</f:facet>
                 #{metadado.tituloTela}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Descricao</f:facet>
                 #{metadado.descricaoTela}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Numero Tela</f:facet>
                 #{metadado.numeroTela}
-            </h:column>
-		</h:dataTable>
+            </p:column>
+		</p:dataTable>
 	</ui:define>
 </ui:composition>
