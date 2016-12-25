@@ -5,7 +5,7 @@
 	xmlns:cf="http://url.projeto/componentes"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:projeto="http://url.projeto/componentes"
-	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	template="/WEB-INF/templates_proprietario/app_layout_content_central.xhtml">
 	<ui:define name="processo">
 		<script type="text/javascript">
     function handleDrop(event, ui) {
@@ -14,12 +14,26 @@
         droppedMetaDado.fadeOut('fast');
     }
 </script>
-		<p:steps activeIndex="2" styleClass="custom">
+		<style type="text/css">
+.ui-steps .ui-steps-item {
+	width: 20%;
+}
+</style>
+		<div style="clear: both; margin-top: 30px; margin-bottom: 20px;"></div>
+		<h:form>
+			<p:commandButton value="" icon="fa fa-recycle" update="@all"
+				action="#{escCpnTela.reiniciar}"
+				style="float:right; width:30px;height:40px;" />
+		</h:form>
+		<p:steps activeIndex="2" styleClass="custom" readonly="false">
+
 			<p:menuitem value="Escolher" url="#" />
 			<p:menuitem value="Configurar" url="#" />
 			<p:menuitem value="Visualiar" url="#" />
 			<p:menuitem value="Cadastrar" url="#" />
 		</p:steps>
+
+		<div style="clear: both; margin-top: 20px; margin-bottom: 20px;"></div>
 		<h:body>
 			<p:panel id="basic" header="Metadados"
 				footer="Componentes gerados para visualizacao"
@@ -31,18 +45,13 @@
 				</ui:fragment>
 			</p:panel>
 		</h:body>
-
-
-	</ui:define>
-	<div style="clear: both;"></div>
-
-	<ui:define name="processo-menu-bar">
 		<h:form>
-			<p:button outcome="/adm/configuraTela/cadastraComponente"
-				value="Cadastrar" icon="fa fa-chevron-left">
-			</p:button>
+			<div style="clear: both; margin-top: 20px; margin-bottom: 20px;"></div>
 			<p:button outcome="/adm/configuraTela/configuraComponente"
 				value="Voltar" icon="fa fa-chevron-left">
+			</p:button>
+			<p:button outcome="/adm/configuraTela/cadastraComponente"
+				value="Continuar" icon="fa fa-chevron-right">
 			</p:button>
 		</h:form>
 	</ui:define>

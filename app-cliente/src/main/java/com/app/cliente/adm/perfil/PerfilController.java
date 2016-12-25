@@ -56,28 +56,14 @@ public class PerfilController implements Serializable {
 
 	private List<PerfilDTO> repositorioPerfil;
 
-	// @ManagedProperty("#{repositorioPerfil}")
-	// private RepositorioPerfil repositorioPerfil;
+	@Inject
+	private RepositorioPerfil repPerfil;
 
 	private TreeNode root;
 
-	@Produces
-	@Named
-	public List<PerfilDTO> getRepositorioPerfil() {
-		return repositorioPerfil;
-	}
-
 	public void onPerfilListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final PerfilDTO perfil) {
 		init();
-	}
-
-	public void listaTodosPerfis() {
-		try {
-			repositorioPerfil = perfilService.bustarTodos();
-		} catch (InfraEstruturaException | NegocioException e) {
-			e.printStackTrace();
-			log.info(e.getMessage());
-		}
+		this.repPerfil.atualizarRepositorio();
 	}
 
 	private PerfilDTO criarPerfil() {
@@ -141,11 +127,12 @@ public class PerfilController implements Serializable {
 
 		this.perfilDTO = criarPerfil();
 		this.perfilPaiDTO = criarPerfil();
-		listaTodosPerfis();
+
 		if (repositorioPerfil == null || repositorioPerfil.isEmpty()) {
 			root = new DefaultTreeNode("Perfis ainda nao configurados", null);
 			return;
 		}
+		this.repositorioPerfil = repPerfil.getRepositorioPerfil();
 		root = new DefaultTreeNode(repositorioPerfil.get(0).getNomePerfil(), null);
 		root.setExpanded(true);
 
@@ -200,7 +187,7 @@ public class PerfilController implements Serializable {
 				for (PerfilDTO filhos : perfilDTO.getPerfilFilhos()) {
 					configurarSubPerfisSelectItem(filhos, items);
 				}
-				
+
 			}
 
 		}

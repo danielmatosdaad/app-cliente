@@ -6,10 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.Application;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -22,12 +20,10 @@ import com.app.cliente.infra.tela.ContextoTela;
 import com.app.cliente.infra.tela.DadosTela;
 import br.com.app.smart.business.exception.InfraEstruturaException;
 import br.com.app.smart.business.exception.NegocioException;
-import br.com.projeto.metadado.infra.comum.IdentificadorBean;
-import br.com.projeto.metadado.infra.comum.IdentificadorNegocial;
-import br.com.projeto.metadado.infra.comum.IdentificadorWrapper;
-import br.com.projeto.metadado.infra.comum.MetadadoUI;
-import br.com.projeto.metadado.infra.comum.dto.ObterMetaDadoDTO;
-import br.com.projeto.metadado.infra.interfaces.IComponenteMetadado;
+import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
+import br.com.app.smart.business.funcionalidade.dto.MetaDadoDTO;
+import br.com.app.smart.business.funcionalidade.dto.TipoIdentificadorDTO;
+import br.com.app.smart.business.tela.componente.interfaces.IMetaDadoUtilDAO;
 
 import com.app.cliente.infra.controller.fluxo.*;
 
@@ -70,11 +66,12 @@ public class ComponenteMB implements ActionListener, Serializable {
 	@Inject
 	private INavegacao fluxoNevegacao;
 
+	@Inject
+	private IMetaDadoUtilDAO metaDadoUtilDAO;
+
 	/**
 	 * 
 	 */
-	@Inject
-	private IComponenteMetadado componenteMetadado;
 
 	/**
 	 * Construtor sem argumentos, cria o mapeamento dos dados que darao suporte
@@ -82,12 +79,11 @@ public class ComponenteMB implements ActionListener, Serializable {
 	 */
 	public ComponenteMB() {
 
-
 	}
-	
+
 	@PostConstruct
-	public void init(){
-		
+	public void init() {
+
 		this.parametros = new LinkedHashMap<String, Object>();
 		this.bean = new LinkedHashMap<String, Object>();
 		this.requisicao = new Requisicao();
@@ -95,12 +91,9 @@ public class ComponenteMB implements ActionListener, Serializable {
 
 	public void gerarView() {
 
-		ObterMetaDadoDTO obterMetaDadoDTO = getEnvioRequisicaoMetadado();
-
 		try {
-			MetadadoUI metadoUI = this.componenteMetadado.gerar(obterMetaDadoDTO);
-			this.definirParametros(metadoUI.getIdentificadoreNegocialMetadados());
-			this.definirParametros(metadoUI.getIdentificadoreBeanMetadados());
+			MetaDadoDTO mdo = obterTela();
+			this.definirParametros(mdo.getIdentificadores());
 
 			ConversorDados conversorDados = new ConversorDados();
 			DadosTela dadosTela = conversorDados.converter(this.getParametros());
@@ -112,8 +105,6 @@ public class ComponenteMB implements ActionListener, Serializable {
 			fluxoNevegacao.nevegar(contextoTela, this.requisicao);
 			this.atualizarParametros(dadosTela);
 
-			Application app = FacesContext.getCurrentInstance().getApplication();
-			app.createComponent(metadoUI.getMetadado().getBuffer().toString());
 		} catch (InfraEstruturaException | NegocioException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,11 +112,10 @@ public class ComponenteMB implements ActionListener, Serializable {
 
 	}
 
-	private ObterMetaDadoDTO getEnvioRequisicaoMetadado() {
-		ObterMetaDadoDTO obterMetaDadoDTO = new ObterMetaDadoDTO();
-		obterMetaDadoDTO.setNumeroFuncionalidade(this.requisicao.getNumeroFuncionalidade());
-		obterMetaDadoDTO.setNumeroTela(this.requisicao.getNumeroTela());
-		return obterMetaDadoDTO;
+	private MetaDadoDTO obterTela() throws InfraEstruturaException, NegocioException {
+		MetaDadoDTO mdo = this.metaDadoUtilDAO.buscarMetaDadoFuncionalidade(this.requisicao.getNumeroFuncionalidade(),
+				this.getRequisicao().getNumeroTela());
+		return mdo;
 	}
 
 	/**
@@ -149,16 +139,16 @@ public class ComponenteMB implements ActionListener, Serializable {
 	 * @param identificadores
 	 * @see Define os identificadores dos componentes de tela
 	 */
-	public void definirParametros(List<IdentificadorWrapper> identificadores) {
+	public void definirParametros(List<IdentificadorDTO> identificadores) {
 
-		for (IdentificadorWrapper id : identificadores) {
+		for (IdentificadorDTO id : identificadores) {
 
-			if (id.getWrapper() instanceof IdentificadorBean) {
+			if (id.getTipoIdentificador().getValue() == TipoIdentificadorDTO.BEAN.getValue()) {
 
-				bean.put(id.getWrapper().getId(), "");
+				bean.put(id.getValor(), "");
 
-			} else if (id.getWrapper() instanceof IdentificadorNegocial) {
-				parametros.put(id.getWrapper().getId(), "");
+			} else if (id.getTipoIdentificador().getValue() == TipoIdentificadorDTO.NEGOCIAL.getValue()) {
+				parametros.put(id.getValor(), "");
 			}
 
 		}
@@ -200,13 +190,8 @@ public class ComponenteMB implements ActionListener, Serializable {
 
 			System.out.println("Atributos botao acionado: ");
 
-			configurarRequisicao(event);
-
-			ObterMetaDadoDTO obterMetaDadoDTO = getEnvioRequisicaoMetadado();
-			MetadadoUI metadoUI;
-			metadoUI = this.componenteMetadado.gerar(obterMetaDadoDTO);
-			this.definirParametros(metadoUI.getIdentificadoreNegocialMetadados());
-			this.definirParametros(metadoUI.getIdentificadoreBeanMetadados());
+			MetaDadoDTO mdo = obterTela();
+			this.definirParametros(mdo.getIdentificadores());
 			carregarValoresOcultos();
 			ConversorDados conversorDados = new ConversorDados();
 
@@ -236,33 +221,33 @@ public class ComponenteMB implements ActionListener, Serializable {
 		// se nao tiver, adiciona
 
 		// para cada iteracao procurar dentro do mapa de parametros local
-		for (Iterator<IdentificadorNegocial> iteracao = dadosTela.getMapParametroNegocial().keySet()
-				.iterator(); iteracao.hasNext();) {
+		for (Iterator<IdentificadorDTO> iteracao = dadosTela.getMapParametroNegocial().keySet().iterator(); iteracao
+				.hasNext();) {
 
-			IdentificadorNegocial identificador = iteracao.next();
+			IdentificadorDTO identificador = iteracao.next();
 			if (identificador != null) {
 
 				Object objeto = this.parametros.get(identificador.getId());
 				// Sendo hasmap, o objeto sera atualizado ou adcionado um
 				// novo,com um hashmpa,
 				// como nao permite chaves duplicadas
-				this.parametros.put(identificador.getId(), dadosTela.getMapParametroNegocial().get(identificador));
+				this.parametros.put(identificador.getValor(), dadosTela.getMapParametroNegocial().get(identificador));
 
 			}
 		}
 
 		// para cada iteracao procurar dentro do mapa de parametros local
-		for (Iterator<IdentificadorBean> iteracao = dadosTela.getMapParametroBeanTela().keySet().iterator(); iteracao
+		for (Iterator<IdentificadorDTO> iteracao = dadosTela.getMapParametroBeanTela().keySet().iterator(); iteracao
 				.hasNext();) {
 
-			IdentificadorBean identificador = iteracao.next();
+			IdentificadorDTO identificador = iteracao.next();
 			if (identificador != null) {
 
 				Object objeto = this.bean.get(identificador.getId());
 				// Sendo hasmap, o objeto sera atualizado ou adcionado um
 				// novo,com um hashmpa,
 				// como nao permite chaves duplicadas
-				this.bean.put(identificador.getId(), dadosTela.getMapParametroBeanTela().get(identificador));
+				this.bean.put(identificador.getValor(), dadosTela.getMapParametroBeanTela().get(identificador));
 
 			}
 		}

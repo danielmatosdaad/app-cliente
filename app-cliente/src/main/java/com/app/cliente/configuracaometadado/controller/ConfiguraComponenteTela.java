@@ -1,6 +1,7 @@
 package com.app.cliente.configuracaometadado.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,9 +13,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import br.com.projeto.facelet.bean.ComponenteFacelet;
-import br.com.projeto.facelet.bean.Facelet;
-import br.com.projeto.facelet.bean.PropriedadeComponenteFacelet;
+
+import br.com.app.smart.business.exception.InfraEstruturaException;
+import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
+import br.com.app.smart.business.tela.componente.dto.ComponenteDTO;
+import br.com.app.smart.business.tela.componente.dto.ComponenteTelaDTO;
+import br.com.app.smart.business.tela.componente.dto.CompositeInterfaceDTO;
+import br.com.app.smart.business.tela.componente.dto.PropriedadeDTO;
 
 @SessionScoped
 @Named("confCpn")
@@ -26,14 +31,27 @@ public class ConfiguraComponenteTela implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private ContextoConfiguraComponenteTela ctxConfMdo;
+	private ContextoConfiguraComponenteTela contexto;
 
 	private Map<String, Object> parametros;
 
-	@PostConstruct
 	public void init() {
 
 		this.parametros = new LinkedHashMap<String, Object>();
+
+		try {
+			this.contexto.setComponenteTelaDTOs(this.contexto.getComponenteTelaService()
+					.converterCompositeInterfaces(this.contexto.getComponentesEscolhidos()));
+		} catch (InfraEstruturaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String irParaPagina(){
+		
+		init();
+		return "/adm/configuraTela/configuraComponente";
 	}
 
 	private void listarValoreRecebidos() {
@@ -48,38 +66,61 @@ public class ConfiguraComponenteTela implements Serializable {
 
 	public void buttonSalvarPropriedadeComponente(ActionEvent actionEvent) {
 
-		if (this.ctxConfMdo.getFaceletsEscolhidos() != null || (!this.ctxConfMdo.getFaceletsEscolhidos().isEmpty())) {
-			for (Facelet facelet : this.ctxConfMdo.getFaceletsEscolhidos()) {
+		listarValoreRecebidos();
 
-				for (ComponenteFacelet componente : facelet.getConteudo().getComponentes()) {
+		List<IdentificadorDTO> identificadoresComponenteDTO = new ArrayList<IdentificadorDTO>();
 
-					for (PropriedadeComponenteFacelet propriedade : componente.getPropriedades()) {
+		if (this.contexto.getComponenteTelaDTOs() != null || (!this.contexto.getComponenteTelaDTOs().isEmpty())) {
+			for (ComponenteTelaDTO componenteTelaDTO : this.contexto.getComponenteTelaDTOs()) {
 
-						String id = facelet.getNomeMetadado().concat("-").concat(componente.getNomeComponente())
-								.concat("-").concat(propriedade.getNome()).replace(".xhtml", "");
+				for (ComponenteDTO componenteDTO : componenteTelaDTO.getComponentes()) {
+
+					for (PropriedadeDTO propriedadeDTO : componenteDTO.getPropriedades()) {
+
+						String id = obterIdComponente(componenteDTO, propriedadeDTO);
 
 						Object objeto = this.parametros.get(id);
 						if (objeto instanceof String) {
 
-							String novoId = propriedade.getValor();
-							if (novoId != null && novoId.contains("#")) {
+							configurarPropriedade(propriedadeDTO, (String) objeto);
+						}
 
-								novoId = novoId.replace("#{", "");
-								novoId = novoId.replace("}", "");
-								propriedade.setNome(novoId);
-								propriedade.setValor((String) objeto);
-							} else {
-								propriedade.setValor((String) objeto);
-							}
+						if (objeto instanceof String || objeto instanceof Number) {
+
+							configurarPropriedade(propriedadeDTO, String.valueOf(objeto));
+						}
+
+						if (objeto instanceof IdentificadorDTO) {
+
+							IdentificadorDTO identificador = (IdentificadorDTO) objeto;
+							identificadoresComponenteDTO.add(identificador);
+							configurarPropriedade(propriedadeDTO, identificador.getValor());
 
 						}
 
 					}
 				}
+
 			}
+
+			this.contexto.setIdentificadores(identificadoresComponenteDTO);
 
 		}
 
+	}
+
+	public String obterIdComponente(ComponenteDTO componenteDTO, PropriedadeDTO propriedadeDTO) {
+		String id = componenteDTO.getNomeComponente().concat("-").concat(propriedadeDTO.getNome())
+				.concat(String.valueOf(componenteDTO.getIdentificador()));
+		System.out.println("###########" + id + "###################");
+		return id;
+	}
+
+	private PropriedadeDTO configurarPropriedade(PropriedadeDTO propriedade, String valor) {
+
+		propriedade.setValor(valor);
+
+		return propriedade;
 	}
 
 	public void addMessage(String summary) {
@@ -105,12 +146,12 @@ public class ConfiguraComponenteTela implements Serializable {
 		this.parametros = parametros;
 	}
 
-	public ContextoConfiguraComponenteTela getCtxConfMdo() {
-		return ctxConfMdo;
+	public ContextoConfiguraComponenteTela getContexto() {
+		return contexto;
 	}
 
-	public void setCtxConfMdo(ContextoConfiguraComponenteTela ctxConfMdo) {
-		this.ctxConfMdo = ctxConfMdo;
+	public void setContexto(ContextoConfiguraComponenteTela contexto) {
+		this.contexto = contexto;
 	}
 
 }

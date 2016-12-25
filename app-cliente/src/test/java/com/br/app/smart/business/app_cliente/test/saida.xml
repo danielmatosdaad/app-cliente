@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><componente xmlns:tns="http://www.projeto.com.br/metadado/bean" xmlns:projeto="http://url.projeto/componentes" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:cc="http://xmlns.jcp.org/jsf/composite" nomeComponente="html"><componente nomeComponente="cc:interface">
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>idbotao</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>nomebotao</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>acao</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>fluxo</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>numerotela</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>numerofuncionalidade</valor></propriedade></componente>
+	<componente nomeComponente="cc:attribute"><propriedade><nome>name</nome><valor>renderizar</valor></propriedade></componente>
+</componente><componente nomeComponente="cc:implementation">
+
+	<componente nomeComponente="div"><propriedade><nome>class</nome><valor>botao-padrao</valor></propriedade><propriedade><nome>jsf:rendered</nome><valor>#{cc.attrs.renderizar}</valor></propriedade>
+		<componente nomeComponente="p:commandButton"><propriedade><nome>id</nome><valor>#{cc.attrs.idbotao}</valor></propriedade><propriedade><nome>actionListener</nome><valor>#{componenteMB.processAction}</valor></propriedade><propriedade><nome>action</nome><valor>#{componenteMB.process}</valor></propriedade><propriedade><nome>value</nome><valor>#{cc.attrs.nomebotao}</valor></propriedade>
+
+			<componente nomeComponente="f:attribute"><propriedade><nome>name</nome><valor>acao</valor></propriedade><propriedade><nome>value</nome><valor>#{cc.attrs.acao}</valor></propriedade></componente>
+			<componente nomeComponente="f:attribute"><propriedade><nome>name</nome><valor>fluxo</valor></propriedade><propriedade><nome>value</nome><valor>#{cc.attrs.fluxo}</valor></propriedade></componente>
+			<componente nomeComponente="f:attribute"><propriedade><nome>name</nome><valor>numeroTela</valor></propriedade><propriedade><nome>value</nome><valor>#{cc.attrs.numerotela}</valor></propriedade></componente>
+			<componente nomeComponente="f:attribute"><propriedade><nome>name</nome><valor>numeroFuncionalidade</valor></propriedade><propriedade><nome>value</nome><valor>#{cc.attrs.numerofuncionalidade}</valor></propriedade></componente>
+		</componente>
+	</componente>
+
+</componente></componente>

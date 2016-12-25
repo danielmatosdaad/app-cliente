@@ -20,19 +20,16 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates_proprietario/app_layout_content_central.xhtml">
+	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
 	<ui:define name="processo">
-		<h:form id="form" style="width:100%">
-			<p:growl id="msgs" showDetail="true" />
+
+		<h:panelGroup id="ui">
 			<ui:fragment rendered="true">
 				<h:form id="form">
-					<ui:include
-						src="/metadado/componente.xhtml?numeroFuncionalidade=1;numeroTela=1" />
+					<html><label-input-text xmlns="http://url.projeto/componentes" idlabel="id-label-username" valorLabel="Identificador" idInputText="id-input-username" renderizar="true" icon="fa fa-cubes"></label-input-text><botao-padrao xmlns="http://url.projeto/componentes" idbotao="id-botao" nomebotao="Entrar" acao="login" fluxo="proximo" numerotela="1" numerofun="1" renderizar="true" icon="fa fa-cubes"></botao-padrao></html>
+				
 				</h:form>
 			</ui:fragment>
-		</h:form>
-	</ui:define>
-
-	<ui:define name="content-rigth">
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>

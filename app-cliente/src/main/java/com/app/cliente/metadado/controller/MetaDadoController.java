@@ -20,7 +20,7 @@ import br.com.app.smart.business.dto.RegistroAuditoriaDTO;
 import br.com.app.smart.business.exception.InfraEstruturaException;
 import br.com.app.smart.business.exception.NegocioException;
 import br.com.app.smart.business.funcionalidade.dto.MetaDadoDTO;
-import br.com.projeto.metadado.regras.IRegrasMetaDado;
+import br.com.app.smart.business.interfaces.IComponenteTelaService;
 
 @Model
 public class MetaDadoController {
@@ -34,8 +34,6 @@ public class MetaDadoController {
 	@Inject
 	private IServicoRemoteDAO<MetaDadoDTO> metaDadoService;
 	
-	@Inject
-	private IRegrasMetaDado regrasMetadados;
 
 	@Inject
 	private Event<MetaDadoDTO> metadadoEventSrc;
@@ -45,6 +43,9 @@ public class MetaDadoController {
 	private MetaDadoDTO metaDadoDTO;
 
 	private List<MetaDadoDTO> repositorioMetaDado;
+	
+	@Inject
+	private IComponenteTelaService componenteTelaService;
 
 	@Produces
 	@Named
@@ -93,7 +94,6 @@ public class MetaDadoController {
 				metaDadoDTO = metaDadoService.adiconar(metaDadoDTO);
 				System.out.println(metaDadoDTO);
 				System.out.println(metaDadoDTO.getId());
-				regrasMetadados.atualizarTela(metaDadoDTO.getId());
 				log.info("Reginstrado com sucesso - id:" + metaDadoDTO.getId());
 				metadadoEventSrc.fire(metaDadoDTO);
 			}

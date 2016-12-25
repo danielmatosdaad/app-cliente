@@ -5,51 +5,45 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:cf="http://url.projeto/componentes"
 	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	template="/WEB-INF/templates_proprietario/app_layout_content_central.xhtml">
 	<ui:define name="processo">
 		<h3>Grupo Funcionalidade</h3>
-
-		<h:form id="reg">
-			<h:panelGrid columns="3" columnClasses="titleCell">
-				<h:outputLabel for="nomeGrupoFuncionalidade" value="Nome Grupo:" />
-				<h:inputText id="nomeGrupoFuncionalidade"
+		<h:form>
+			<p:growl id="msgs" showDetail="true" />
+			<p:panelGrid columns="1">
+				<p:outputLabel for="nomeGrupoFuncionalidade" value="Nome Grupo:" />
+				<p:inputText id="nomeGrupoFuncionalidade"
 					value="#{grupoFuncionalidadeDTO.nomeGrupoFuncionalidade}" />
-				<h:message for="nomeGrupoFuncionalidade" errorClass="invalid" />
 
-				<h:outputLabel for="descricao" value="descricao do grupo" />
-				<h:inputText id="descricao"
+				<p:outputLabel for="descricao" value="descricao do grupo" />
+				<p:inputText id="descricao"
 					value="#{grupoFuncionalidadeDTO.descricao}" />
-				<h:message for="descricao" errorClass="invalid" />
-			</h:panelGrid>
-			<p>
-				<h:panelGrid columns="2">
-					<h:commandButton id="registrar"
-						action="#{grupoFuncionalidadeController.registrar}"
-						value="Registrar" styleClass="register" />
-					<h:messages styleClass="messages" errorClass="invalid"
-						infoClass="valid" warnClass="warning" globalOnly="true" />
-				</h:panelGrid>
-			</p>
+				<p:commandButton id="registrar"
+					action="#{grupoFuncionalidadeController.registrar}"
+					value="Registrar" styleClass="register" />
+			</p:panelGrid>
 		</h:form>
-		<h2>Grupo funcionalidade do sistema</h2>
-		<h:panelGroup rendered="#{empty repositorioGrupoFuncionalidade}">
-			<em>Nao ha grupos de funcionalidade do sistema.</em>
-		</h:panelGroup>
-		<h:dataTable var="bean" value="#{repositorioGrupoFuncionalidade}"
-			rendered="#{not empty repositorioGrupoFuncionalidade}"
+		<div class="divisao" />
+		<p:panelGrid rendered="#{empty repositorioGrupoFuncionalidade}">
+			<em>Nao ha grupos de funcionalidades do sistema.</em>
+		</p:panelGrid>
+		<p:dataTable var="bean" value="#{repositorioGrupoFuncionalidade.grupoFuncionalidadeRepositorio}"
+			rendered="#{not empty repositorioGrupoFuncionalidade.grupoFuncionalidadeRepositorio}"
 			styleClass="simpletablestyle">
-			<h:column>
+			<f:facet name="header">
+           Grupo funcionalidades registrados</f:facet>
+			<p:column>
 				<f:facet name="header">Id</f:facet>
                 #{bean.id}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Nome Grupo</f:facet>
                 #{bean.nomeGrupoFuncionalidade}
-            </h:column>
-			<h:column>
+            </p:column>
+			<p:column>
 				<f:facet name="header">Descricao</f:facet>
                 #{bean.descricao}
-            </h:column>
-		</h:dataTable>
+            </p:column>
+		</p:dataTable>
 	</ui:define>
 </ui:composition>

@@ -8,7 +8,7 @@ import java.util.Map;
 import com.app.cliente.infra.controller.negocial.DadosNegocial;
 import com.app.cliente.infra.tela.DadosTela;
 
-import br.com.projeto.metadado.infra.comum.IdentificadorNegocial;
+import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
 
 public class ConversorDados {
 
@@ -18,25 +18,7 @@ public class ConversorDados {
 
 	public DadosTela converter(Map<String, Object> dadosComponente) {
 
-		HashMap<IdentificadorNegocial, Object> map = new LinkedHashMap<IdentificadorNegocial, Object>();
-		for (Iterator<String> iterator = dadosComponente.keySet().iterator(); iterator
-				.hasNext();) {
-
-			String chave = iterator.next();
-
-			if (chave != null) {
-
-				Object objeto = dadosComponente.get(chave);
-				IdentificadorNegocial idNegocial = IdentificadorNegocial
-						.getInstancia(chave);
-				if (idNegocial.isValorNegocial()) {
-
-					map.put(idNegocial, objeto);
-				}
-			}
-		}
 		DadosTela dados = new DadosTela();
-		dados.setMapParametroNegocial(map);
 		return dados;
 	}
 

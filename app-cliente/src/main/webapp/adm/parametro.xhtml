@@ -5,44 +5,33 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:cf="http://url.projeto/componentes"
 	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	template="/WEB-INF/templates_proprietario/app_layout_content_central.xhtml">
 	<ui:define name="processo">
-		<p:fieldset legend="Cadastro" toggleable="true" toggleSpeed="500">
-			<h:form id="reg">
-				<h:panelGrid columns="3" columnClasses="titleCell">
-					<h:outputLabel for="name" value="Name:" />
-					<h:inputText id="name" value="#{parametroDTO.nome}" />
-					<h:message for="name" errorClass="invalid" />
-
-					<h:outputLabel for="descricao" value="Descricao:" />
-					<h:inputText id="descricao" value="#{parametroDTO.descricao}" />
-					<h:message for="descricao" errorClass="invalid" />
-
-					<h:outputLabel for="valor" value="Valor:" />
-					<h:inputText id="valor" value="#{parametroDTO.valor}" />
-					<h:message for="valor" errorClass="invalid" />
-					<h:outputLabel value="Tipo Parametro" />
-					<h:selectOneMenu value="#{parametroDTO.tipoParametro}"
-						converter="tipoParametroConverter">
-						<f:selectItem itemLabel="Selecione" />
-						<f:selectItems value="#{parametroController.listaTipoParametros}" />
-					</h:selectOneMenu>
-				</h:panelGrid>
-				<div style="clear: both; height: 20px"></div>
-					<p:panel columns="2" style="width:100%;float:center;border:0px;">
-						<p:commandButton id="registrar"
-							action="#{parametroController.registrar}" value="Registrar" />
-						<p:messages styleClass="messages"
-							infoClass="valid" warnClass="warning" globalOnly="true" />
-					</p:panel>
-				</h:form>
-		</p:fieldset>
+		<h:form>
+			<p:growl id="msgs" showDetail="true" />
+			<p:panelGrid columns="1">
+				<p:outputLabel for="name" value="Name:" />
+				<p:inputText id="name" value="#{parametroDTO.nome}" />
+				<p:outputLabel for="descricao" value="Descricao:" />
+				<p:inputText id="descricao" value="#{parametroDTO.descricao}" />
+				<p:outputLabel for="valor" value="Valor:" />
+				<h:inputText id="valor" value="#{parametroDTO.valor}" />
+				<p:outputLabel value="Tipo Parametro" />
+				<p:selectOneMenu value="#{parametroDTO.tipoParametro}"
+					converter="tipoParametroConverter">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{parametroController.listaTipoParametros}" />
+				</p:selectOneMenu>
+				<p:commandButton id="registrar"
+					action="#{parametroController.registrar}" value="Registrar" />
+			</p:panelGrid>
+		</h:form>
 		<div style="clear: both; height: 20px"></div>
 		<h:form id="form-edit">
 			<p:growl id="msgs" showDetail="true" />
-			<h:panelGroup rendered="#{empty repositorioParametro}">
+			<p:panelGrid rendered="#{empty repositorioParametro}">
 				<em>Nao ha parametros do sistema.</em>
-			</h:panelGroup>
+			</p:panelGrid>
 			<p:dataTable var="parametro" value="#{repositorioParametro}"
 				rendered="#{not empty repositorioParametro}" editable="true"
 				style="margin-bottom:20px">

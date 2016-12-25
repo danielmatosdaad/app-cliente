@@ -9,6 +9,7 @@ import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,6 +26,7 @@ import br.com.app.smart.business.funcionalidade.dto.FuncionalidadeDTO;
 import br.com.app.smart.business.funcionalidade.dto.GrupoFuncionalidadeDTO;
 import br.com.app.smart.business.funcionalidade.dto.MetaDadoDTO;
 import br.com.app.smart.business.funcionalidade.dto.PerfilDTO;
+import br.com.app.smart.business.funcionalidade.interfaces.IFuncionalidadeDAO;
 import br.com.app.smart.business.parametro.dto.TipoParametroDTO;
 
 import javax.annotation.PostConstruct;
@@ -77,7 +79,9 @@ public class FuncionalidadeController implements Serializable {
 	@Inject
 	private Event<FuncionalidadeDTO> funcionalidadeEventSrc;
 
-		
+	@Inject
+	private IFuncionalidadeDAO funcionalidadeDAO;
+	
 	public void onFireEvenChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final FuncionalidadeDTO dto) throws InfraEstruturaException, NegocioException {
 		initFuncionalidadeDTO();
 	}
@@ -113,16 +117,34 @@ public class FuncionalidadeController implements Serializable {
 				this.funcionalidadeRegistro.setMetadados(listaMetadado);
 				FuncionalidadeDTO FuncionalidadeRebidoDTO = funcionalidadeService.adiconar(funcionalidadeRegistro);
 				funcionalidadeEventSrc.fire(this.funcionalidadeRegistro);
+				FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrado com sucesso!",
+						"Registrado com sucesso.");
+				facesContext.addMessage(null, m);
+				initFuncionalidadeDTO();
 			}
-			FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrado com sucesso!",
-					"Registrado com sucesso.");
-			facesContext.addMessage(null, m);
-			initFuncionalidadeDTO();
+			
 		} catch (Exception e) {
 			String errorMessage = getRootErrorMessage(e);
 			FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Nao foi posssivel registrar");
 			facesContext.addMessage(null, m);
 		}
+	}
+	
+	public void registrarFuncionalidadeSemRelacionamentos() {
+
+		try {
+			FuncionalidadeDTO FuncionalidadeDTO = this.funcionalidadeDAO.adicionarFuncionalidadeSemRelacionamento(this.funcionalidadeRegistro);
+			System.out.println(FuncionalidadeDTO);
+			System.out.println(FuncionalidadeDTO.getId());
+			FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registrado com sucesso!",
+					"Registrado com sucesso.");
+			facesContext.addMessage(null, m);
+			funcionalidadeEventSrc.fire(this.funcionalidadeRegistro);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private String getRootErrorMessage(Exception e) {

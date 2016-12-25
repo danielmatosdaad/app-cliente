@@ -1,11 +1,13 @@
 package com.app.cliente.funcionalidade.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -118,6 +120,20 @@ public class RepositorioFuncionalidade implements Serializable {
 	public void setRepositorioFuncionalidade(List<FuncionalidadeDTO> repositorioFuncionalidade) {
 		this.repositorioFuncionalidade = repositorioFuncionalidade;
 	}
-	
-	
+
+	public List getSelectItemFuncionalidade() {
+		List items = new ArrayList();
+
+		if (this.repositorioFuncionalidade != null) {
+			if (this.getRepositorioFuncionalidade() != null) {
+				for (FuncionalidadeDTO dto : this.getRepositorioFuncionalidade()) {
+					items.add(new SelectItem(dto, dto.getNomeFuncionalidade()));
+				}
+			}
+
+		}
+
+		return items;
+	}
+
 }

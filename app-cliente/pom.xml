@@ -98,12 +98,6 @@
 			</dependency>
 			<dependency>
 				<groupId>br.com.app.smart.business</groupId>
-				<artifactId>app-smart-business-mdo-tla</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-				<type>ejb</type>
-			</dependency>
-			<dependency>
-				<groupId>br.com.app.smart.business</groupId>
 				<artifactId>
 					app-smart-business-infra-servico
 				</artifactId>
@@ -244,11 +238,6 @@
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>br.com.app.smart.business</groupId>
-			<artifactId>app-smart-business-mdo-tla</artifactId>
-			<type>ejb</type>
 		</dependency>
 		<dependency>
 			<groupId>br.com.app.smart.business</groupId>

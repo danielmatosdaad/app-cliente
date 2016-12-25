@@ -1,6 +1,5 @@
 package com.app.cliente.grupofuncionalidade.controller;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -15,8 +14,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.app.smart.business.dao.interfaces.IServicoRemoteDAO;
-import br.com.app.smart.business.exception.InfraEstruturaException;
-import br.com.app.smart.business.exception.NegocioException;
 import br.com.app.smart.business.funcionalidade.dto.GrupoFuncionalidadeDTO;
 
 @Model
@@ -38,32 +35,18 @@ public class GrupoFuncionalidadeController {
 	@Named
 	private GrupoFuncionalidadeDTO grupoFuncionalidadeDTO;
 
-	private List<GrupoFuncionalidadeDTO> repositorioGrupoFuncionalidade;
-
-	@Produces
-	@Named
-	public List<GrupoFuncionalidadeDTO> getRepositorioGrupoFuncionalidade() {
-		return repositorioGrupoFuncionalidade;
-	}
-
-	public void onParametroListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final GrupoFuncionalidadeDTO parametro) {
+	@Inject
+	private RepositorioGrupoFuncionalidade repositorioGrupoFuncionalidade;
+	
+	public void onGrupoFuncionalidadeListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final GrupoFuncionalidadeDTO grupoFuncionalidadeDTO) {
 		initGrupoFuncionalidadeDTO();
+		this.repositorioGrupoFuncionalidade.atualizarRepositorio();
 	}
 
-	public void listaTodosGrupoFuncionalidades() {
-		try {
-			repositorioGrupoFuncionalidade = grupoFuncionalidadeService.bustarTodos();
-		} catch (InfraEstruturaException | NegocioException e) {
-			e.printStackTrace();
-			log.info(e.getMessage());
-		}
-	}
 
 	@PostConstruct
 	public void initGrupoFuncionalidadeDTO() {
-
 		this.grupoFuncionalidadeDTO = criarGrupoFuncionalidade();
-		listaTodosGrupoFuncionalidades();
 	}
 
 	private GrupoFuncionalidadeDTO criarGrupoFuncionalidade() {
@@ -113,4 +96,14 @@ public class GrupoFuncionalidadeController {
 		// This is the root cause message
 		return errorMessage;
 	}
+
+	public GrupoFuncionalidadeDTO getGrupoFuncionalidadeDTO() {
+		return grupoFuncionalidadeDTO;
+	}
+
+	public void setGrupoFuncionalidadeDTO(GrupoFuncionalidadeDTO grupoFuncionalidadeDTO) {
+		this.grupoFuncionalidadeDTO = grupoFuncionalidadeDTO;
+	}
+	
+	
 }

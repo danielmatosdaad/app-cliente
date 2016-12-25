@@ -1,6 +1,5 @@
 package com.app.cliente.configuracaometadado.controller;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -15,13 +14,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.xml.bind.JAXBException;
-import javax.xml.transform.TransformerException;
 
+import br.com.app.smart.business.processoconfiguracao.dto.ResultadoConvercaoComponenteUI;
 import br.com.projeto.arquivo.util.FileUtil;
-import br.com.projeto.facelet.bean.Facelet;
-import br.com.projeto.metadado.bean.MetaDado;
-import br.com.projeto.metadado.infra.comum.StringBufferOutputStream;
 
 @SessionScoped
 @Named("visCpnTela")
@@ -36,22 +31,32 @@ public class VisualizaComponenteTela implements Serializable {
 	private ConfiguraComponenteTela configuraPropriedadeMetaDadoTela;
 
 	@Inject
-	private ContextoConfiguraComponenteTela ctxConfMdo;
+	private ContextoConfiguraComponenteTela contexto;
 
 	@PostConstruct
 	public void init() {
 
 	}
 
-	public String converterFaceletMetaDado() {
+	public String converterComponenteTela() {
 
-		List<Facelet> faceletes = this.ctxConfMdo.getFaceletsEscolhidos();
-		this.ctxConfMdo.setMetadadGerado(ctxConfMdo.getService().converterFaceletMetaDado(faceletes));
-		MetaDado mdo = this.ctxConfMdo.getMetadadGerado();
 		try {
-			StringBufferOutputStream sbos = this.ctxConfMdo.getService().transformarMetadado(mdo);
-			return sbos.getBuffer().toString();
-		} catch (FileNotFoundException | TransformerException | JAXBException e) {
+			ResultadoConvercaoComponenteUI resultado = contexto.getComponenteTelaService()
+					.converterComponenteUI(this.contexto.getComponenteTelaDTOs());
+			List<StringBuffer> out = resultado.getComponeteXhtml();
+			String outConcat = "<html>";
+			if (out != null) {
+
+				for (StringBuffer sb : out) {
+					outConcat = outConcat.concat(sb.toString());
+				}
+
+			}
+			outConcat = outConcat.concat("</html>");
+			this.contexto.setOutputComponenteTelaUI(outConcat);
+			this.contexto.setResultadoConvercaoComponenteUI(resultado);
+			return outConcat;
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -59,7 +64,9 @@ public class VisualizaComponenteTela implements Serializable {
 	}
 
 	public String gerarView() {
-		String out = converterFaceletMetaDado();
+		String out = converterComponenteTela();
+		System.out.println(out);
+
 		try {
 			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 			String absoluteWebPath = context.getRealPath("/");
@@ -83,8 +90,7 @@ public class VisualizaComponenteTela implements Serializable {
 		return configuraPropriedadeMetaDadoTela;
 	}
 
-	public void setConfiguraPropriedadeMetaDadoTela(
-			ConfiguraComponenteTela configuraPropriedadeMetaDadoTela) {
+	public void setConfiguraPropriedadeMetaDadoTela(ConfiguraComponenteTela configuraPropriedadeMetaDadoTela) {
 		this.configuraPropriedadeMetaDadoTela = configuraPropriedadeMetaDadoTela;
 	}
 

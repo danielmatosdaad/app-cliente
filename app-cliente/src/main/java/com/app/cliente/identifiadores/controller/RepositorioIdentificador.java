@@ -1,11 +1,13 @@
 package com.app.cliente.identifiadores.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import br.com.app.smart.business.dao.interfaces.IServicoRemoteDAO;
@@ -14,7 +16,7 @@ import br.com.app.smart.business.exception.NegocioException;
 import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
 
 @ApplicationScoped
-@Named
+@Named("repIdentificador")
 public class RepositorioIdentificador implements Serializable {
 
 	/**
@@ -87,6 +89,20 @@ public class RepositorioIdentificador implements Serializable {
 
 	public void setListaIdentificador(List<IdentificadorDTO> listaIdentificador) {
 		this.listaIdentificador = listaIdentificador;
+	}
+	
+	public List getListaIdentificadores() {
+		
+		List items = new ArrayList();
+		if(this.listaIdentificador!=null){
+			
+			for (IdentificadorDTO identificadorDTO : listaIdentificador) {
+				
+				items.add(new SelectItem(identificadorDTO, identificadorDTO.getValor()));
+			}
+		}
+		
+		return items;
 	}
 
 }

@@ -14,6 +14,7 @@ import br.com.app.smart.business.exception.InfraEstruturaException;
 import br.com.app.smart.business.exception.NegocioException;
 import br.com.app.smart.business.funcionalidade.dto.MetaDadoDTO;
 import br.com.app.smart.business.funcionalidade.dto.PerfilDTO;
+import br.com.app.smart.business.tela.componente.interfaces.IMetaDadoUtilDAO;
 
 @ApplicationScoped
 public class RepositorioMetaDado implements Serializable {
@@ -29,8 +30,11 @@ public class RepositorioMetaDado implements Serializable {
 	@Inject
 	private IServicoRemoteDAO<MetaDadoDTO> metadadoService;
 
+	@Inject
+	private IMetaDadoUtilDAO metaDadoUtilDAO;
+
 	private List<MetaDadoDTO> metadadoRepositorio;
-	
+
 	@PostConstruct
 	public void init() {
 
@@ -72,6 +76,14 @@ public class RepositorioMetaDado implements Serializable {
 		return metadadoRepositorio;
 	}
 
-	
-	
+	public MetaDadoDTO buscarMetaDadoFuncionalidade(int idFuncionalidade, int numeroTela) {
+
+		try {
+			return metaDadoUtilDAO.buscarMetaDadoFuncionalidade(idFuncionalidade, numeroTela);
+		} catch (InfraEstruturaException | NegocioException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

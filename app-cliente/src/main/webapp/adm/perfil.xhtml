@@ -5,80 +5,74 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:cf="http://url.projeto/componentes"
 	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates_proprietario/app_layout_content.xhtml">
+	template="/WEB-INF/templates_proprietario/app_layout_content_central.xhtml">
 	<ui:define name="processo">
-	<p:fieldset legend="Hieraquica de Perfil" style="margin-bottom:20px">
-		<h:panelGrid columns="1" cellpadding="5">
-			<h:form>
-				<p:tree value="#{perfilController.root}" var="node"
-					orientation="horizontal">
-					<p:treeNode>
-						<h:outputText value="#{node}" />
-					</p:treeNode>
-				</p:tree>
-			</h:form>
-		</h:panelGrid>
-	</p:fieldset>
+		<p:fieldset legend="Hieraquica de Perfil" style="margin-bottom:20px">
+			<h:panelGrid columns="1" cellpadding="5">
+				<h:form>
+					<p:tree value="#{repositorioPerfil.root}" var="node"
+						orientation="horizontal">
+						<p:treeNode>
+							<h:outputText value="#{node}" />
+						</p:treeNode>
+					</p:tree>
+				</h:form>
+			</h:panelGrid>
+		</p:fieldset>
 
-	<h:form id="reg">
-		<h3>Registro Perfil</h3>
-		<h:panelGrid columns="3" style="margin-bottom:10px"
-			columnClasses="label, value,message">
-			<p:outputLabel for="perfil_pai"
-				rendered="#{not empty repositorioPerfil}" value="Sub perfil de:" />
-			<p:selectOneListbox id="perfil_pai"
-				value="#{perfilController.perfilPaiDTO}" converter="perfilConverter"
-				var="p" filter="true" filterMatchMode="contains"
-				rendered="#{not empty repositorioPerfil}">
-				<f:selectItem itemLabel="Selecione" />
-				<f:selectItems value="#{perfilController.listaPerfilSelectItem}"
-					var="perfil" itemLabel="#{perfil.nomePerfil}" itemValue="#{perfil}" />
+		<h:form>
+			<p:growl id="msgs" showDetail="true" />
+			<h3>Registro Perfil</h3>
+			<h:panelGrid columns="1" style="margin-bottom:10px"
+				columnClasses="label, value,message">
+				<p:outputLabel for="perfil_pai"
+					rendered="#{not empty repositorioPerfil}" value="Sub perfil de:" />
+				<p:selectOneListbox id="perfil_pai"
+					value="#{perfilController.perfilPaiDTO}"
+					converter="perfilConverter" var="p" filter="true"
+					filterMatchMode="contains"
+					rendered="#{not empty repositorioPerfil.repositorioPerfil}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{repositorioPerfil.listaPerfilSelectItem}"
+						var="perfil" itemLabel="#{perfil.nomePerfil}"
+						itemValue="#{perfil}" />
 
-				<p:column>
-					<h:outputText styleClass="ui-theme ui-theme-#{p.nomePerfil}" />
-				</p:column>
+					<p:column>
+						<h:outputText styleClass="ui-theme ui-theme-#{p.nomePerfil}" />
+					</p:column>
 
-				<p:column>
-					<h:outputText value="#{p.nomePerfil}" />
-				</p:column>
-			</p:selectOneListbox>
-			<h:message for="perfil_pai" errorClass="invalid" />
+					<p:column>
+						<h:outputText value="#{p.nomePerfil}" />
+					</p:column>
+				</p:selectOneListbox>
 
-			<h:outputLabel for="nomePerfil" value="Name:" />
-			<h:inputText id="nomePerfil" value="#{perfilDTO.nomePerfil}" />
-			<h:message for="nomePerfil" errorClass="invalid" />
-
-			<h:outputLabel for="descricao" value="Descricao:" />
-			<h:inputText id="descricao" value="#{perfilDTO.descricao}" />
-			<h:message for="descricao" errorClass="invalid" />
-
-		</h:panelGrid>
-
-		<p>
-			<h:panelGrid columns="2">
-				<h:commandButton id="registrar"
+				<p:outputLabel for="nomePerfil" value="Name:" />
+				<p:inputText id="nomePerfil" value="#{perfilDTO.nomePerfil}" />
+				<p:outputLabel for="descricao" value="Descricao:" />
+				<p:inputText id="descricao" value="#{perfilDTO.descricao}" />
+				<p:commandButton id="registrar"
 					action="#{perfilController.registrar}" value="Registrar"
 					styleClass="register" />
-				<h:messages styleClass="messages" errorClass="invalid"
-					infoClass="valid" warnClass="warning" globalOnly="true" />
 			</h:panelGrid>
-		</p>
-	</h:form>
 
-	<p:dataTable var="perfil" value="#{repositorioPerfil}"
-		rendered="#{not empty repositorioPerfil}">
-		<p:column>
-			<f:facet name="header">Id</f:facet>
+		</h:form>
+		<div class="divisao" />
+		<p:dataTable var="perfil" value="#{repositorioPerfil.repositorioPerfil}"
+			rendered="#{not empty repositorioPerfil.repositorioPerfil}">
+			<f:facet name="header">
+           	Perfils Registrados</f:facet>
+			<p:column>
+				<f:facet name="header">Id</f:facet>
                 #{perfil.id}
             </p:column>
-		<p:column>
-			<f:facet name="header">Sub perfil de</f:facet>
+			<p:column>
+				<f:facet name="header">Sub perfil de</f:facet>
                 #{perfil.perfilPai.id}
             </p:column>
-		<p:column>
-			<f:facet name="header">Nome</f:facet>
+			<p:column>
+				<f:facet name="header">Nome</f:facet>
                 #{perfil.nomePerfil}
             </p:column>
-	</p:dataTable>
+		</p:dataTable>
 	</ui:define>
 </ui:composition>

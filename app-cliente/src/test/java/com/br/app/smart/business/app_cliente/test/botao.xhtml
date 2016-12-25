@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:projeto="http://url.projeto/componentes">
+
+
+<cc:interface name="botao-padrao" displayName="botao-padrao" shortDescription="Botao padrao sem requsicao ajax.">
+	<cc:attribute name="idbotao" />
+	<cc:attribute name="nomebotao" />
+	<cc:attribute name="acao" />
+	<cc:attribute name="fluxo" />
+	<cc:attribute name="numerotela" />
+	<cc:attribute name="numerofuncionalidade" />
+	<cc:attribute name="renderizar" />
+</cc:interface>
+
+<cc:implementation>
+
+	<div class="botao-padrao" jsf:rendered="#{cc.attrs.renderizar}">
+		<p:commandButton id="#{cc.attrs.idbotao}"
+			actionListener="#{componenteMB.processAction}"
+			action="#{componenteMB.process}" value="#{cc.attrs.nomebotao}">
+
+			<f:attribute name="acao" value="#{cc.attrs.acao}" />
+			<f:attribute name="fluxo" value="#{cc.attrs.fluxo}" />
+			<f:attribute name="numeroTela" value="#{cc.attrs.numerotela}" />
+			<f:attribute name="numeroFuncionalidade"
+				value="#{cc.attrs.numerofuncionalidade}" />
+		</p:commandButton>
+	</div>
+
+</cc:implementation>
+</html>

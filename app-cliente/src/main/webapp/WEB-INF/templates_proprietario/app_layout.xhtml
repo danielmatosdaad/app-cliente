@@ -17,35 +17,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>app-cliente</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<h:outputStylesheet name="main/css/sh.css" />
-</h:head>
-<h:body>
-	<div class="ui-fluid">
-		<div id="container">
-			<p:layout
-				style="min-width:680px;min-height:384px; width:1260px; height:700px;">
-				<p:layoutUnit position="west" resizable="true" size="300">
-					<h:form>
-						<p:growl id="messages" showDetail="false" />
+<f:view contentType="text/html">
 
-						<p:menu style="width:270px;">
-							<p:submenu label="Ajax">
-								<p:menuitem value="Save" actionListener="#{menuView.save}"
-									update="messages" icon="ui-icon-disk" />
-								<p:menuitem value="Update" actionListener="#{menuView.update}"
-									update="messages" icon="ui-icon-arrowrefresh-1-w" />
+	<h:head>
+		<title>app-cliente</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<h:outputStylesheet name="main/css/showcase.css" />
+		<h:outputStylesheet name="main/css/sh.css" />
+		<h:outputScript name="main/js/sh.js"></h:outputScript>
+		<h:outputStylesheet library="css" name="projeto-principal.css"  />
+	</h:head>
+	<h:body>
+		<div style="margin-left: 5%; margin-right: 5%;">
+			<p:layout fullPage="true">
+				<p:layoutUnit id="top" position="north" size="50">
+					<p:menubar>
+						<p:submenu label="Projeto" icon="ui-icon-document">
+							<p:submenu label="New" icon="ui-icon-contact">
+								<p:menuitem value="Project" url="#" />
+								<p:menuitem value="Other" url="#" />
 							</p:submenu>
-							<p:submenu label="Non-Ajax">
-								<p:menuitem value="Delete" actionListener="#{menuView.delete}"
-									update="messages" ajax="false" icon="ui-icon-close" />
-							</p:submenu>
-							<p:submenu label="Configuracao Sistema">
+							<p:menuitem value="Open" url="#" />
+							<p:menuitem value="Quit" url="#" />
+						</p:submenu>
+
+						<p:submenu label="Administrativo" icon="fa fa-desktop">
+							<p:submenu label="Configuracao Sistema" icon="ui-icon-contact"
+								style="width:200px;">
 								<p:menuitem value="Parametro" outcome="/adm/parametro"
 									icon="fa fa-chevron-right" />
 								<p:menuitem value="Perfil" outcome="/adm/perfil"
@@ -54,25 +56,30 @@
 									outcome="/adm/grupofuncionalidade" icon="fa fa-chevron-right" />
 								<p:menuitem value="Funcionalidade" outcome="/adm/funcionalidade"
 									icon="fa fa-chevron-right" />
-
-								<p:menuitem value="Configura Tela"
+								<p:menuitem value="Criar Tela"
 									outcome="/adm/configuraTela/escolhaComponente"
 									icon="fa fa-chevron-right" />
-								<p:menuitem value="Metadado" outcome="/adm/metadado"
+								<p:menuitem value="Tela" outcome="/adm/metadado"
 									icon="fa fa-chevron-right" />
-								<p:menuitem value="Identificadores MetaDado"
+								<p:menuitem value="Identificadores"
 									outcome="/adm/identificadores/mantemIdentificador"
 									icon="fa fa-chevron-right" />
-								<p:menuitem value="External" url="http://www.primefaces.org"
-									icon="ui-icon-home" />
 							</p:submenu>
-						</p:menu>
-					</h:form>
+						</p:submenu>
 
-
+						<p:submenu label="Help" icon="ui-icon-help">
+							<p:menuitem value="Contents" url="#" />
+							<p:submenu label="Search" icon="ui-icon-search">
+								<p:submenu label="Text">
+									<p:menuitem value="Workspace" url="#" />
+								</p:submenu>
+								<p:menuitem value="File" url="#" />
+							</p:submenu>
+						</p:submenu>
+					</p:menubar>
 				</p:layoutUnit>
-				<p:layoutUnit position="center" size="1000" style="width:100%">
-					<div id="content">
+				<p:layoutUnit position="center" style="width:90%;">
+					<div id="content" style="margin-left: 5%; margin-right: 5%;">
 						<ui:insert name="content"></ui:insert>
 						<ui:insert name="menu-bar"></ui:insert>
 					</div>
@@ -80,9 +87,6 @@
 
 			</p:layout>
 		</div>
-	</div>
-	<script src="/adm/resources/main/js/sh.js"></script>
-	<script>SyntaxHighlighter.all();</script>
-
-</h:body>
+	</h:body>
+</f:view>
 </html>

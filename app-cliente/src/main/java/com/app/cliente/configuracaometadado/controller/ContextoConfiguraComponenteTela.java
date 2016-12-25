@@ -7,9 +7,13 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import br.com.projeto.facelet.bean.Facelet;
-import br.com.projeto.metadado.bean.MetaDado;
-import br.com.projeto.metadado.regras.IRegrasMetaDado;
+
+import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
+import br.com.app.smart.business.interfaces.IComponenteTelaService;
+import br.com.app.smart.business.processoconfiguracao.dto.ResultadoConvercaoComponenteUI;
+import br.com.app.smart.business.tela.componente.dto.ComponenteTelaDTO;
+import br.com.app.smart.business.tela.componente.dto.CompositeInterfaceDTO;
+import br.com.app.smart.business.tela.componente.dto.PropriedadeDTO;
 
 @Named(value = "ctxConfCpnTela")
 @SessionScoped
@@ -21,40 +25,92 @@ public class ContextoConfiguraComponenteTela implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private IRegrasMetaDado service;
+	private IComponenteTelaService componenteTelaService;
 
-	private List<Facelet> faceletsEscolhidos;
+	private List<CompositeInterfaceDTO> componentesEscolhidos;
 
-	private MetaDado metadadGerado;
+	private List<ComponenteTelaDTO> componenteTelaDTOs;
+
+	private List<IdentificadorDTO> identificadores;
+
+	ResultadoConvercaoComponenteUI resultadoConvercaoComponenteUI;
+
+	private String outputComponenteTelaUI;
 
 	@PostConstruct
 	public void init() {
 
-		this.faceletsEscolhidos = new ArrayList<Facelet>();
+		this.componentesEscolhidos = new ArrayList<CompositeInterfaceDTO>();
 	}
 
-	public IRegrasMetaDado getService() {
-		return service;
+	public IComponenteTelaService getComponenteTelaService() {
+		System.out.println(componenteTelaService);
+		return componenteTelaService;
 	}
 
-	public void setService(IRegrasMetaDado service) {
-		this.service = service;
+	public void setComponenteTelaService(IComponenteTelaService componenteTelaService) {
+		this.componenteTelaService = componenteTelaService;
 	}
 
-	public List<Facelet> getFaceletsEscolhidos() {
-		return faceletsEscolhidos;
+	public List<CompositeInterfaceDTO> getComponentesEscolhidos() {
+		return componentesEscolhidos;
 	}
 
-	public void setFaceletsEscolhidos(List<Facelet> faceletsEscolhidos) {
-		this.faceletsEscolhidos = faceletsEscolhidos;
+	public void setComponentesEscolhidos(List<CompositeInterfaceDTO> componentesEscolhidos) {
+		this.componentesEscolhidos = componentesEscolhidos;
 	}
 
-	public MetaDado getMetadadGerado() {
-		return metadadGerado;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public void setMetadadGerado(MetaDado metadadGerado) {
-		this.metadadGerado = metadadGerado;
+	public String getOutputComponenteTelaUI() {
+		return outputComponenteTelaUI;
+	}
+
+	public void setOutputComponenteTelaUI(String outputComponenteTelaUI) {
+		this.outputComponenteTelaUI = outputComponenteTelaUI;
+	}
+
+	public List<ComponenteTelaDTO> getComponenteTelaDTOs() {
+		return componenteTelaDTOs;
+	}
+
+	public void setComponenteTelaDTOs(List<ComponenteTelaDTO> componenteTelaDTOs) {
+		this.componenteTelaDTOs = componenteTelaDTOs;
+	}
+
+	public void limpar() {
+		if (this.componentesEscolhidos != null) {
+
+			this.componentesEscolhidos.clear();
+		}
+
+		if (this.componenteTelaDTOs != null) {
+			this.componenteTelaDTOs.clear();
+		}
+
+		if (this.outputComponenteTelaUI != null) {
+
+			this.outputComponenteTelaUI = "";
+		}
+
+	}
+
+	public List<IdentificadorDTO> getIdentificadores() {
+		return identificadores;
+	}
+
+	public void setIdentificadores(List<IdentificadorDTO> identificadores) {
+		this.identificadores = identificadores;
+	}
+
+	public ResultadoConvercaoComponenteUI getResultadoConvercaoComponenteUI() {
+		return resultadoConvercaoComponenteUI;
+	}
+
+	public void setResultadoConvercaoComponenteUI(ResultadoConvercaoComponenteUI resultadoConvercaoComponenteUI) {
+		this.resultadoConvercaoComponenteUI = resultadoConvercaoComponenteUI;
 	}
 
 }

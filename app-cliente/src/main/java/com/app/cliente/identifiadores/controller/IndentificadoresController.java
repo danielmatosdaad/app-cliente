@@ -18,6 +18,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+
 import br.com.app.smart.business.dao.interfaces.IServicoRemoteDAO;
 import br.com.app.smart.business.exception.InfraEstruturaException;
 import br.com.app.smart.business.exception.NegocioException;
@@ -133,6 +136,35 @@ public class IndentificadoresController implements Serializable {
 
 	public void setListaIdentificador(List<IdentificadorDTO> listaIdentificador) {
 		this.listaIdentificador = listaIdentificador;
+	}
+
+	public void onRowEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Identificador Edited", "y");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Edit Cancelled", "x");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onCellEdit(CellEditEvent event) {
+		Object oldValue = event.getOldValue();
+		Object newValue = event.getNewValue();
+
+		if (newValue != null && !newValue.equals(oldValue)) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed",
+					"Old: " + oldValue + ", New:" + newValue);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+	}
+
+	public IdentificadorDTO getIdentificadorDTO() {
+		return identificadorDTO;
+	}
+
+	public void setIdentificadorDTO(IdentificadorDTO identificadorDTO) {
+		this.identificadorDTO = identificadorDTO;
 	}
 
 }

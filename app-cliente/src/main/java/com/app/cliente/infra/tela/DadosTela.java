@@ -5,21 +5,20 @@ import java.util.LinkedHashMap;
 
 import com.app.cliente.infra.controller.fluxo.Requisicao;
 
-import br.com.projeto.metadado.infra.comum.IdentificadorBean;
-import br.com.projeto.metadado.infra.comum.IdentificadorNegocial;
+import br.com.app.smart.business.funcionalidade.dto.IdentificadorDTO;
 
 public class DadosTela {
 
-	private HashMap<IdentificadorNegocial, Object> mapParametroNegocial = new LinkedHashMap<IdentificadorNegocial, Object>();
-	private HashMap<IdentificadorBean, Object> mapParametroBeanTela = new LinkedHashMap<IdentificadorBean, Object>();
+	private HashMap<IdentificadorDTO, Object> mapParametroNegocial = new LinkedHashMap<IdentificadorDTO, Object>();
+	private HashMap<IdentificadorDTO, Object> mapParametroBeanTela = new LinkedHashMap<IdentificadorDTO, Object>();
 	private Requisicao requisicaoFuncionalidade;
 
 	public DadosTela() {
 
 	}
 
-	public DadosTela(HashMap<IdentificadorNegocial, Object> dadoRecebido,
-			HashMap<IdentificadorBean, Object> dadosBeanTela,
+	public DadosTela(HashMap<IdentificadorDTO, Object> dadoRecebido,
+			HashMap<IdentificadorDTO, Object> dadosBeanTela,
 			Requisicao requisicaoFuncionalidade) {
 
 		this.mapParametroNegocial = dadoRecebido;
@@ -28,34 +27,34 @@ public class DadosTela {
 
 	}
 
-	public DadosTela(HashMap<IdentificadorNegocial, Object> dadoRecebido,
+	public DadosTela(HashMap<IdentificadorDTO, Object> dadoRecebido,
 			Requisicao requisicaoFuncionalidade) {
 
 		this.mapParametroNegocial = dadoRecebido;
 		this.requisicaoFuncionalidade = requisicaoFuncionalidade;
 	}
 
-	public DadosTela(HashMap<IdentificadorNegocial, Object> map) {
+	public DadosTela(HashMap<IdentificadorDTO, Object> map) {
 
 		this.mapParametroNegocial = map;
 	}
 
-	public HashMap<IdentificadorNegocial, Object> getMapParametroNegocial() {
+	public HashMap<IdentificadorDTO, Object> getMapParametroNegocial() {
 		return mapParametroNegocial;
 	}
 
 	
 	public void setMapParametroNegocial(
-			HashMap<IdentificadorNegocial, Object> mapParametroNegocial) {
+			HashMap<IdentificadorDTO, Object> mapParametroNegocial) {
 		this.mapParametroNegocial = mapParametroNegocial;
 	}
 
-	public HashMap<IdentificadorBean, Object> getMapParametroBeanTela() {
+	public HashMap<IdentificadorDTO, Object> getMapParametroBeanTela() {
 		return mapParametroBeanTela;
 	}
 
 	public void setMapParametroBeanTela(
-			HashMap<IdentificadorBean, Object> mapParametroBeanTela) {
+			HashMap<IdentificadorDTO, Object> mapParametroBeanTela) {
 		this.mapParametroBeanTela = mapParametroBeanTela;
 	}
 
@@ -68,7 +67,7 @@ public class DadosTela {
 		this.requisicaoFuncionalidade = requisicaoFuncionalidade;
 	}
 
-	public void adicionaDadoNegocial(IdentificadorNegocial id, Object objeto) {
+	public void adicionaDadoNegocial(IdentificadorDTO id, Object objeto) {
 
 		this.mapParametroNegocial.put(id, objeto);
 
@@ -79,13 +78,13 @@ public class DadosTela {
 		this.mapParametroNegocial.remove(objeto);
 	}
 
-	public void removeDadoNegocial(IdentificadorNegocial id) {
+	public void removeDadoNegocial(IdentificadorDTO id) {
 
 		Object obj = this.mapParametroNegocial.get(id);
 		this.mapParametroNegocial.remove(obj);
 	}
 
-	public void adicionaBean(IdentificadorBean id, Object objeto) {
+	public void adicionaBean(IdentificadorDTO id, Object objeto) {
 
 		this.mapParametroBeanTela.put(id, objeto);
 
@@ -96,7 +95,7 @@ public class DadosTela {
 		this.mapParametroBeanTela.remove(objeto);
 	}
 
-	public void removeBean(IdentificadorBean id) {
+	public void removeBean(IdentificadorDTO id) {
 
 		Object obj = this.mapParametroBeanTela.get(id);
 		this.mapParametroBeanTela.remove(obj);
